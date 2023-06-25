@@ -3,8 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import styles from "./home.module.css";
 
 import { BiSearch } from "react-icons/bi";
+import BASE_URL from '../../constants/url.ts'
 
-//67f9141787211428 || 8a7b8740a0632df4
 
 interface CoinProps {
   name: string;
@@ -28,7 +28,7 @@ function Home() {
 
   useEffect(() => {
     function getData() {
-      fetch("https://sujeitoprogramador.com/api-cripto/?key=8a7b8740a0632df4")
+      fetch(BASE_URL)
         .then((res) => res.json())
         .then((data: DataProps) => {
           const coinsData = data.coins.slice(0, 15);
@@ -46,7 +46,7 @@ function Home() {
             };
             return formated;
           });
-
+          console.log(formatResult)
           setCoins(formatResult);
         });
     }
