@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { FormEvent, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./home.module.css";
 
 import { BiSearch } from "react-icons/bi";
@@ -23,6 +23,8 @@ interface DataProps {
 
 function Home() {
   const [coins, setCoins] = useState<CoinProps[]>([]);
+  const [input, setInput] = useState("");
+  const navigate = useNavigate()
 
   useEffect(() => {
     function getData() {
@@ -51,10 +53,22 @@ function Home() {
 
     getData();
   }, []);
+
+  function handleSearch(e: FormEvent) {
+    e.preventDefault();
+
+    if(input === '') return
+
+    navigate(`detail/${input}`)
+  }
   return (
     <main className={styles.container}>
-      <form className={styles.form}>
-        <input placeholder="Digite o símbolo da moeda: BTC..." />
+      <form className={styles.form} onSubmit={handleSearch}>
+        <input
+          placeholder="Digite o símbolo da moeda: BTC..."
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+        />
         <button type="submit">
           <BiSearch size={30} color="#fff" />
         </button>
@@ -75,7 +89,8 @@ function Home() {
             <tr className={styles.tr} key={coin.name}>
               <td className={styles.td} data-label="Moeda">
                 <Link to={`/detail/${coin.symbol}`} className={styles.link}>
-                  <span className={styles.link}>{coin.name}</span> | {coin.symbol }
+                  <span className={styles.link}>{coin.name}</span> |{" "}
+                  {coin.symbol}
                 </Link>
               </td>
               <td className={styles.tdLabel} data-label="Mercado">
@@ -85,7 +100,12 @@ function Home() {
                 <span>{coin.formatedPrice}</span>
               </td>
 
-              <td className={Number(coin?.delta_24h) >= 0 ? styles.tdProfit : styles.tdLoss} data-label="Volume">
+              <td
+                className={
+                  Number(coin?.delta_24h) >= 0 ? styles.tdProfit : styles.tdLoss
+                }
+                data-label="Volume"
+              >
                 <span>{coin.delta_24h}</span>
               </td>
             </tr>

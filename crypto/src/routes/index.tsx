@@ -8,11 +8,19 @@ import { Layout } from "../components/layout";
 
 const router = createBrowserRouter([
   {
-    element: <Layout/>,
+    element: <Layout />,
     children: [
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/detail/:crypto",
+        element: <Detail />,
+      },
+      {
+        path: "*",
+        element: <NotFound />,
       },
     ],
   },
